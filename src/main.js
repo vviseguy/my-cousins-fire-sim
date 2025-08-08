@@ -3,7 +3,7 @@ import { drawLogs } from './logs.js'
 import { renderFire } from './fire.js'
 import { scene, canvas, ctx, resize, showMessage, wireControls, tossFuel } from './ui.js'
 import { step } from './sim.js'
-import { initLogs3D, addLog3D, updateThermal3D, render3D, getThree, updatePhysics3D } from './logs3d.js'
+import { initLogs3D, addLog3D, updateThermal3D, render3D, getThree, updatePhysics3D, getHotSpots } from './logs3d.js'
 import { initFlame3D, updateFlame3D } from './flame3d.js'
 
 // Expose for debugging
@@ -30,7 +30,7 @@ function loop(now){ const dt = now - last; last = now
 
   step(dt, canvas, radiant3D)
 
-  if(state.use3D){ updateFlame3D(dt/1000, state.intensity) }
+  if(state.use3D){ updateFlame3D(dt/1000, state.intensity, getHotSpots()) }
 
   render(now)
   requestAnimationFrame(loop)

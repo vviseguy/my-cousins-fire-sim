@@ -34,7 +34,7 @@ function makeFlameTexture(){
 }
 
 function makeSprite(){
-  const mat = new THREE.SpriteMaterial({ transparent: true, depthWrite:false, blending: THREE.AdditiveBlending, color: 0xffffff, opacity: 0 })
+  const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite:false, blending: THREE.AdditiveBlending, color: 0xffffff, opacity: 0 })
   const s = new THREE.Sprite(mat)
   s.visible = false
   s.userData = { age:0, life:1, vel: new THREE.Vector3(), startSize: 10 }
