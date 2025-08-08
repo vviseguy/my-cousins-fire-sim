@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Campfire Keeper — Realistic Flames & Logs</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <header><div style="width:48px;height:48px;border-radius:10px;background:linear-gradient(180deg,#132a2a,#08383a);display:flex;align-items:center;justify-content:center">🔥</div>
+      <div><h1>Campfire Keeper</h1><div class="small">More realistic flame rendering and canvas-drawn log stacking. Toss fuel to add burn time.</div></div>
+    </header>
+
+    <div id="scene">
+      <canvas id="flameCanvas"></canvas>
+      <div id="message" style="display:none" class="msg"></div>
+    </div>
+
+    <div class="controls">
+      <button id="startBtn">Start Fire</button>
+      <div style="flex:1">
+        <div class="small">Intensity</div>
+        <div class="meter" style="margin-top:6px"><i id="intensityBar"></i></div>
+      </div>
+      <div style="width:120px;text-align:right">
+        <div class="small">Fuel left</div>
+        <div id="fuelLeft" class="small">0s</div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:8px;margin-top:12px">
+      <button data-fuel="tinder">+ Tinder</button>
+      <button data-fuel="kindling">+ Kindling</button>
+      <button data-fuel="log">+ Log</button>
+      <div class="small" style="margin-left:10px">Click a fuel to toss it into the fire. Inventory unlimited. Keys: 1/2/3.</div>
+    </div>
+
+    <div style="display:flex;gap:16px;align-items:center;margin-top:12px">
+      <label class="small" for="sparkSlider" style="min-width:80px">Sparks</label>
+      <input id="sparkSlider" type="range" min="0" max="3" step="0.1" value="1" style="flex:1" />
+      <span id="sparkVal" class="small">1.0x</span>
+    </div>
+  </div>
+
+  <aside class="card right">
+    <div><strong>Fuel visuals (embedded SVG)</strong></div>
+    <div style="margin-top:8px" class="resource-icons">
+      <div class="resource"><div id="icon-tinder"></div><div class="small">Tinder — +8s</div></div>
+      <div class="resource"><div id="icon-kindling"></div><div class="small">Kindling — +25s</div></div>
+      <div class="resource"><div id="icon-log"></div><div class="small">Log — +120s</div></div>
+    </div>
+
+    <div style="margin-top:12px;color:#9fb9c8">
+      Intensity is derived from fuel. Intensity only reaches zero when fuel runs out; at that point the flames disappear and you must Start again.
+    </div>
+  </aside>
+</div>
+
+<script type="module" src="src/main.js"></script>
+</body>
+</html>
