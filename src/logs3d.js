@@ -12,7 +12,7 @@ export function initLogs3D(){
   three = initThree()
   const { scene } = three
 
-  // Simple log geometry: rounded box (capsule-like)
+  // Simple log geometry: capsule (axis along Y)
   const radius = 6
   const length = 60
   const cylGeo = new THREE.CapsuleGeometry(radius, length, 8, 16)
@@ -26,18 +26,27 @@ export function initLogs3D(){
   window.addEventListener('resize', resizeThree)
 }
 
-export function addLog3D(){
+export function addLog3D(kind='log'){
   const { scene } = three
   const mesh = new THREE.Mesh(logGeo, logMat.clone())
   mesh.castShadow = false
   mesh.receiveShadow = false
+  // rotate to lie horizontally along X (capsule axis Y -> world X)
+  mesh.rotation.z = Math.PI/2
+
   // stable jitter baked per-log
   const seed = Math.random()
   const jx = (seed*2-1) * 6
   const jy = (seed*1.37%1*2-1) * 2
   const jz = (seed*2.41%1*2-1) * 6
   const jyaw = (seed*1.91%1-0.5) * 0.08
-  const entry = { mesh, temp: 30 + Math.random()*10, moisture: 0.1 + Math.random()*0.1, burning:false, ember:0, row:0, jx, jy, jz, jyaw }
+
+  // scale by kind: adjust radius (X/Z) and length (Y before rotation)
+  const radScale = kind==='tinder'? 0.35 : kind==='kindling'? 0.6 : 1
+  const lenScale = kind==='tinder'? 0.45 : kind==='kindling'? 0.7 : 1
+  mesh.scale.set(radScale, lenScale, radScale)
+
+  const entry = { mesh, temp: 30 + Math.random()*10, moisture: 0.1 + Math.random()*0.1, burning:false, ember:0, row:0, jx, jy, jz, jyaw, kind }
   scene.add(mesh)
   logs3d.push(entry)
   if(logs3d.length>60){ const old = logs3d.shift(); scene.remove(old.mesh); old.mesh.geometry.dispose(); old.mesh.material.dispose() }
@@ -59,7 +68,8 @@ export function layoutLogs3D(){
     const z = (row%2===0? -spacingZ : spacingZ) + (L.jz||0)
     const yaw = (row%2===0? (-15+col*6) : (15-col*6)) * Math.PI/180 + (L.jyaw||0)
     L.mesh.position.set(x, y, z)
-    L.mesh.rotation.set(0, yaw, 0)
+    // maintain horizontal orientation (z-rot PI/2) and set yaw
+    L.mesh.rotation.set(0, yaw, Math.PI/2)
     L.row = row
   }
 }

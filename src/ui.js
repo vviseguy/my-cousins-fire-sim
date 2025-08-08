@@ -67,12 +67,12 @@ function depositFuel(type){
   // translate legacy fuel seconds to energy units
   const energy = fuelSecondsToEnergy(FUEL[type])
   state.energy += energy
-  if(type==='log'){
+  if(type==='log' || type==='kindling' || type==='tinder'){
     // always add to 2D list for fallback
-    addLog()
+    addLog(type)
     // add to 3D if enabled
     if(state.use3D){
-      try { if(typeof addLog3D === 'function') addLog3D() } catch(e){ console.warn('3D addLog failed, falling back to 2D', e); }
+      try { if(typeof addLog3D === 'function') addLog3D(type) } catch(e){ console.warn('3D addLog failed, falling back to 2D', e); }
     }
   }
   state.score += (type==='log'?5:type==='kindling'?2:1)
