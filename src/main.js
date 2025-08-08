@@ -3,7 +3,7 @@ import { drawLogs } from './logs.js'
 import { renderFire } from './fire.js'
 import { scene, canvas, ctx, resize, showMessage, wireControls, tossFuel } from './ui.js'
 import { step } from './sim.js'
-import { initLogs3D, addLog3D, layoutLogs3D, updateThermal3D, render3D, getThree } from './logs3d.js'
+import { initLogs3D, addLog3D, updateThermal3D, render3D, getThree, updatePhysics3D } from './logs3d.js'
 import { initFlame3D, updateFlame3D } from './flame3d.js'
 
 // Expose for debugging
@@ -24,7 +24,7 @@ function loop(now){ const dt = now - last; last = now
   let radiant3D
   // Update 3D or 2D logs
   if(state.use3D){
-    layoutLogs3D()
+    updatePhysics3D(Math.min(0.05, dt/1000))
     radiant3D = updateThermal3D(dt/1000) || 0
   }
 
